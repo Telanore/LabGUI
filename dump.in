@@ -1,0 +1,67 @@
+if((mid.hentRad() - 1) < 0){
+  nord = null;
+}else{
+  nord = labyrint[mid.hentKolonne()][mid.hentRad() - 1];
+}
+//logikken bak denne metoden har gitt meg vondt i hodet
+if((mid.hentRad() + 1) == rader){
+  sor = null;
+}else{
+  sor = labyrint[mid.hentKolonne()][mid.hentRad() + 1];
+}
+
+if((mid.hentKolonne() + 1) == kolonner){
+  ost = null;
+}else{
+  ost = labyrint[mid.hentKolonne() + 1][mid.hentRad()];
+}
+
+if((mid.hentKolonne() - 1) < 0){
+  vest = null;
+}else{
+  vest = labyrint[mid.hentKolonne() - 1][mid.hentRad()];
+}
+
+
+
+
+while(!altPlassert){
+
+  for(int r = 0; r < labyrint.length; r++){
+    for(int k = 0; k < labyrint[r].length; k++){
+      System.out.println((r*rader)+k);
+      System.out.println("R: " + r + " K: " + k);
+      labyrint[r][k] = ruter.get((r * rader) + k);
+      labyrint[r][k].settPosisjon(r+1, k+1);
+    }
+  }
+
+  //etter at alle er satt inn, tildeler naboer
+  System.out.println("labyrint.length: " + labyrint.length+" labyrint[0].length: "+ labyrint[0].length);
+  for(int r = 0; r < labyrint.length; r++){
+    System.out.println("R: " +r);
+    for(int k = 0; k < labyrint[r].length; k++){
+      System.out.println("K: " + k);
+      settNaboer(labyrint[r][k]);
+    }
+  }
+  System.out.println("Naboer satt");
+
+  //etter at naboer er satt inn, sjekker om noen av dem er aapninger
+  for(int r = 0; r < labyrint.length; r++){
+    for(int k = 0; k < labyrint[r].length; k++){
+
+      if(labyrint[r][k] instanceof Aapning){
+        altPlassert = true;
+      }
+
+      if(labyrint[r][k].erAapning() && !(labyrint[r][k] instanceof Aapning)){ //metode som sjekker om noen av naboene er null - returnerer false om instanceof SortRute
+        altPlassert = false; //maa sette inn alt paa nytt dersom den finner en aapning
+        ruter.set((r * rader) + k, new Aapning()); //erstatter hvit rute med aapning i ruter listen
+
+      }
+
+    }
+  }
+}
+}
